@@ -42,7 +42,6 @@ jobs:
           WALLET_PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
 
       - name: Execute claims
-        if: ${{ secrets.WALLET_PRIVATE_KEY != '' }}
         run: node scripts/claim.js
         env:
           WALLET_PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}

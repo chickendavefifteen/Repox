@@ -48,10 +48,16 @@ const protocols = JSON.parse(readFileSync(join(__dirname, 'protocols.json'), 'ut
 
 async function getProvider(chainConfig) {
   const rpcs = [chainConfig.rpc, ...(chainConfig.fallbackRpcs || [])];
+  // staticNetwork skips ethers v6 auto-detection (which retries endlessly on blocked IPs)
+  const network = ethers.Network.from(chainConfig.chainId);
   for (const rpc of rpcs) {
     try {
-      const provider = new ethers.JsonRpcProvider(rpc);
-      await provider.getBlockNumber();
+      const provider = new ethers.JsonRpcProvider(rpc, network, { staticNetwork: network });
+      // Quick liveness check with a hard timeout
+      await Promise.race([
+        provider.getBlockNumber(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000)),
+      ]);
       return provider;
     } catch {
       console.warn(`  RPC failed: ${rpc}, trying next...`);

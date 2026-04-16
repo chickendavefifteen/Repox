@@ -35,10 +35,14 @@ async function getProvider(chain) {
   const chainConfig = protocols.chains[chain];
   if (!chainConfig) throw new Error(`Unknown chain: ${chain}`);
   const rpcs = [chainConfig.rpc, ...(chainConfig.fallbackRpcs || [])];
+  const network = ethers.Network.from(chainConfig.chainId);
   for (const rpc of rpcs) {
     try {
-      const provider = new ethers.JsonRpcProvider(rpc);
-      await provider.getBlockNumber();
+      const provider = new ethers.JsonRpcProvider(rpc, network, { staticNetwork: network });
+      await Promise.race([
+        provider.getBlockNumber(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000)),
+      ]);
       return provider;
     } catch {
       // Try next RPC

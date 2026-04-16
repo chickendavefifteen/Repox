@@ -37,13 +37,11 @@ jobs:
         run: npm ci
 
       - name: Scan for claimable tokens
-        # Scan works with address only — no private key needed
         run: node scripts/scan.js
         env:
           WALLET_PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
 
       - name: Execute claims
-        # Only runs if WALLET_PRIVATE_KEY secret has been set
         if: ${{ secrets.WALLET_PRIVATE_KEY != '' }}
         run: node scripts/claim.js
         env:
@@ -70,21 +68,15 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
 
           if [ -f data/portfolio.json ]; then
-            CLAIMABLES=$(node -e "const d=JSON.parse(require('fs').readFileSync('data/portfolio.json')); console.log(d.claimables?.length || 0)")
-            TOTAL_USD=$(node -e "const d=JSON.parse(require('fs').readFileSync('data/portfolio.json')); console.log('$' + (d.totalClaimableUsd || 0).toFixed(2))")
+            CLAIMABLES=$(jq '.claimables | length' data/portfolio.json 2>/dev/null || echo 0)
+            TOTAL_USD=$(jq '("$" + (.totalClaimableUsd // 0 | tostring))' -r data/portfolio.json 2>/dev/null || echo '$0')
             echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
             echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
             echo "| Claimable positions found | $CLAIMABLES |" >> $GITHUB_STEP_SUMMARY
             echo "| Total claimable value | $TOTAL_USD |" >> $GITHUB_STEP_SUMMARY
           fi
 
-          if [ "${{ secrets.WALLET_PRIVATE_KEY }}" = "" ]; then
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Auto-claiming is inactive.** Add the \`WALLET_PRIVATE_KEY\` secret to enable it." >> $GITHUB_STEP_SUMMARY
-            echo "Go to: Settings → Secrets and variables → Actions → New repository secret" >> $GITHUB_STEP_SUMMARY
-          fi
-
           if [ -f data/claims.json ]; then
-            CLAIMS=$(node -e "const d=JSON.parse(require('fs').readFileSync('data/claims.json')); console.log(d.length)")
+            CLAIMS=$(jq 'length' data/claims.json 2>/dev/null || echo 0)
             echo "| Total historical claims | $CLAIMS |" >> $GITHUB_STEP_SUMMARY
           fi

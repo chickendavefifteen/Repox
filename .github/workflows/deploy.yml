@@ -2,8 +2,9 @@ name: Deploy Dashboard to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, master, 'claude/**']
   workflow_run:
+    # Re-deploy whenever the claim bot commits new data
     workflows: ['Claim Free Tokens']
     types: [completed]
   workflow_dispatch:
@@ -13,6 +14,7 @@ permissions:
   pages: write
   id-token: write
 
+# Only one deployment at a time
 concurrency:
   group: pages
   cancel-in-progress: false

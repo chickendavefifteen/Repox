@@ -562,6 +562,49 @@ code {
   margin: 0 auto;
 }
 
+/* ─── Activate Banner ────────────────────────────────────────────────────────── */
+.activate-banner {
+  background: rgba(76, 201, 240, 0.08);
+  border-bottom: 1px solid rgba(76, 201, 240, 0.2);
+  padding: 10px 16px;
+}
+
+.activate-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.activate-icon { font-size: 1.1rem; flex-shrink: 0; }
+
+.activate-text {
+  flex: 1;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.activate-text code {
+  background: rgba(76, 201, 240, 0.12);
+  color: var(--accent2);
+}
+
+.activate-link {
+  background: var(--accent2);
+  color: #000;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.activate-link:hover { opacity: 0.88; text-decoration: none; }
+
 /* ─── Loading ────────────────────────────────────────────────────────────────── */
 .loading-screen {
   display: flex;

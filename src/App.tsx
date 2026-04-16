@@ -103,6 +103,11 @@ export default function App() {
     return <SetupPage onSetup={handleSetupComplete} />;
   }
 
+  // Show banner if wallet is configured but auto-claiming isn't enabled yet.
+  // The banner disappears once the WALLET_PRIVATE_KEY secret is added to GitHub
+  // and the bot has run at least one successful claim.
+  const claimingEnabled = claims.some(c => !c.status);
+
   return (
     <div className="app">
       <header className="app-header">
@@ -114,6 +119,26 @@ export default function App() {
           <div className="header-sub">Multi-chain airdrop &amp; reward auto-claimer</div>
         </div>
       </header>
+
+      {!claimingEnabled && (
+        <div className="activate-banner">
+          <div className="activate-inner">
+            <span className="activate-icon">⚡</span>
+            <div className="activate-text">
+              <strong>Scanning is live.</strong> To enable auto-claiming, add one GitHub secret named{' '}
+              <code>WALLET_PRIVATE_KEY</code> in your repo's Settings → Secrets → Actions.
+            </div>
+            <a
+              className="activate-link"
+              href="../../settings/secrets/actions/new"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Add secret ↗
+            </a>
+          </div>
+        </div>
+      )}
 
       <main className="app-main">
         <PortfolioBar

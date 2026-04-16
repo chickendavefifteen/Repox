@@ -1,0 +1,15 @@
+{
+  "address": "",
+  "lastScan": null,
+  "nativeBalances": {
+    "ethereum": { "amount": 0, "usdValue": 0, "currency": "ETH" },
+    "base":     { "amount": 0, "usdValue": 0, "currency": "ETH" },
+    "optimism": { "amount": 0, "usdValue": 0, "currency": "ETH" },
+    "arbitrum": { "amount": 0, "usdValue": 0, "currency": "ETH" },
+    "zksync":   { "amount": 0, "usdValue": 0, "currency": "ETH" }
+  },
+  "totalNativeUsd": 0,
+  "claimables": [],
+  "totalClaimableUsd": 0,
+  "totalUsd": 0
+}

@@ -1,0 +1,159 @@
+[
+  {
+    "name": "Uniswap V3 LP Rewards",
+    "chain": "ethereum",
+    "chainId": 1,
+    "contractAddress": "0x000000000022D473030F116dDEE9F6B43aC78BA3",
+    "claimMethod": "merkle",
+    "tokenSymbol": "UNI",
+    "abi": [
+      "function claimable(address account) view returns (uint256)",
+      "function claim() external"
+    ],
+    "active": false
+  },
+  {
+    "name": "Arbitrum One Airdrop",
+    "chain": "arbitrum",
+    "chainId": 42161,
+    "contractAddress": "0x67a24CE4321aB3aF51c2D0a4801c3E111D88C9d9",
+    "claimMethod": "merkle",
+    "tokenSymbol": "ARB",
+    "abi": [
+      "function claimable(address account) view returns (bool claimable, uint256 amount)",
+      "function claim() external"
+    ],
+    "active": false
+  },
+  {
+    "name": "Optimism Season 4 Distribution",
+    "chain": "optimism",
+    "chainId": 10,
+    "contractAddress": "0xFb4D5A94b516DF77Fbdbcf3CfeB262baAF7D4db",
+    "claimMethod": "merkle",
+    "tokenSymbol": "OP",
+    "abi": [
+      "function claimable(address account) view returns (uint256)",
+      "function claim(uint256 amount, bytes32[] calldata proof) external"
+    ],
+    "active": false
+  },
+  {
+    "name": "Base Onchain Summer NFT Rewards",
+    "chain": "base",
+    "chainId": 8453,
+    "contractAddress": "0x4200000000000000000000000000000000000042",
+    "claimMethod": "merkle",
+    "tokenSymbol": "BASE",
+    "abi": [
+      "function claimable(address account) view returns (uint256)",
+      "function claim() external"
+    ],
+    "active": false
+  },
+  {
+    "name": "Blur Airdrop Season 1",
+    "chain": "ethereum",
+    "chainId": 1,
+    "contractAddress": "0x5283D291DBCF85356A21bA090E6db59121208b44",
+    "claimMethod": "merkle",
+    "tokenSymbol": "BLUR",
+    "abi": [
+      "function claimable(address account) view returns (uint256)",
+      "function claim(uint256 cumulativeAmount, bytes32 expectedMerkleRoot, bytes32[] calldata merkleProof) external"
+    ],
+    "active": false
+  },
+  {
+    "name": "zkSync Era Airdrop",
+    "chain": "zksync",
+    "chainId": 324,
+    "contractAddress": "0x66Fd4FC8FA52c9bec2149b1FEA56Fc55de5F0b51",
+    "claimMethod": "merkle",
+    "tokenSymbol": "ZK",
+    "abi": [
+      "function isClaimed(address account) view returns (bool)",
+      "function claimable(address account) view returns (uint256)",
+      "function claim(uint256 amount, bytes32[] calldata merkleProof) external"
+    ],
+    "active": false
+  },
+  {
+    "name": "Starknet Airdrop",
+    "chain": "ethereum",
+    "chainId": 1,
+    "contractAddress": "0xE179198fd42f5de1A04fFd17C3f6668819D7E0C6",
+    "claimMethod": "merkle",
+    "tokenSymbol": "STRK",
+    "abi": [
+      "function claimable(address account) view returns (uint256)",
+      "function claim(uint256 amount, bytes32[] calldata proof) external"
+    ],
+    "active": false
+  },
+  {
+    "name": "Eigen Layer Airdrop Season 1",
+    "chain": "ethereum",
+    "chainId": 1,
+    "contractAddress": "0x035bdA8a431927a878A5E2a0f4b76a1e2Dd29b3",
+    "claimMethod": "merkle",
+    "tokenSymbol": "EIGEN",
+    "abi": [
+      "function claimable(address account) view returns (uint256)",
+      "function claim(uint256 amount, bytes32[] calldata merkleProof) external"
+    ],
+    "active": false
+  },
+  {
+    "name": "Layerzero Airdrop",
+    "chain": "ethereum",
+    "chainId": 1,
+    "contractAddress": "0x1fA8693fB8c822a2859ebAFbA9b6A41B7c0B9ca4",
+    "claimMethod": "merkle",
+    "tokenSymbol": "ZRO",
+    "abi": [
+      "function claimable(address account) view returns (uint256)",
+      "function claim(uint256 amount, bytes32[] calldata proof) external"
+    ],
+    "active": false
+  },
+  {
+    "name": "Wormhole Airdrop",
+    "chain": "ethereum",
+    "chainId": 1,
+    "contractAddress": "0xb6D6CeC5D184D301d18b6C91A5571Da4A1e7e3a",
+    "claimMethod": "merkle",
+    "tokenSymbol": "W",
+    "abi": [
+      "function claimable(address account) view returns (uint256)",
+      "function claim(uint256 amount, bytes32[] calldata proof) external"
+    ],
+    "active": false
+  },
+  {
+    "name": "Drift Protocol Airdrop",
+    "chain": "ethereum",
+    "chainId": 1,
+    "contractAddress": "0xC36A35EbF4de052D76E7C7A53BD7d0e4B82CA58B",
+    "claimMethod": "merkle",
+    "tokenSymbol": "DRIFT",
+    "abi": [
+      "function claimable(address account) view returns (uint256)",
+      "function claim(uint256 amount, bytes32[] calldata proof) external"
+    ],
+    "active": false
+  },
+  {
+    "name": "Merlin Chain Airdrop",
+    "chain": "ethereum",
+    "chainId": 1,
+    "contractAddress": "0x9Ba021B0a9b958B5E75cE9f6dff97C7eE52cb3E6",
+    "claimMethod": "merkle",
+    "tokenSymbol": "MERL",
+    "abi": [
+      "function claimable(address account) view returns (uint256)",
+      "function claim() external"
+    ],
+    "active": false
+  }
+]

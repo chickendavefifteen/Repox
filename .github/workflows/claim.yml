@@ -1,0 +1,83 @@
+name: Claim Free Tokens
+
+on:
+  schedule:
+    # Runs daily at 09:00 UTC — good time to catch low gas windows
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    # Also triggerable manually from GitHub.com or the dashboard "Scan Now" button
+    inputs:
+      dry_run:
+        description: 'Dry run (scan only, do not claim)'
+        required: false
+        default: 'false'
+        type: boolean
+
+permissions:
+  contents: write   # Needed to commit updated data/ files back to repo
+
+jobs:
+  scan-and-claim:
+    name: Scan chains + claim tokens
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          # Fetch full history so we can commit back cleanly
+          fetch-depth: 1
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scan for claimable tokens
+        run: node scripts/scan.js
+        env:
+          WALLET_PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
+
+      - name: Execute claims
+        run: node scripts/claim.js
+        env:
+          WALLET_PRIVATE_KEY: ${{ secrets.WALLET_PRIVATE_KEY }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          # Claim only when token value is ≥ 3× gas cost (protects against dust)
+          GAS_VALUE_MULTIPLIER: '3'
+
+      - name: Commit updated portfolio data
+        run: |
+          git config user.name  "claim-bot[bot]"
+          git config user.email "claim-bot@users.noreply.github.com"
+          git add data/portfolio.json data/claims.json data/pending.json data/wallet.json
+          # Only commit if something actually changed
+          if git diff --staged --quiet; then
+            echo "No data changes — nothing to commit."
+          else
+            git commit -m "bot: update portfolio data $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Claim Run Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f data/portfolio.json ]; then
+            CLAIMABLES=$(node -e "const d=require('./data/portfolio.json'); console.log(d.claimables?.length || 0)")
+            TOTAL_USD=$(node -e "const d=require('./data/portfolio.json'); console.log('$' + (d.totalClaimableUsd || 0).toFixed(2))")
+            echo "- **Claimable positions found:** $CLAIMABLES" >> $GITHUB_STEP_SUMMARY
+            echo "- **Total claimable value:** $TOTAL_USD" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -f data/claims.json ]; then
+            CLAIMS=$(node -e "const d=require('./data/claims.json'); console.log(d.length)")
+            echo "- **Total historical claims:** $CLAIMS" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "View your dashboard: https://\${{ github.repository_owner }}.github.io/\${{ github.event.repository.name }}/" >> $GITHUB_STEP_SUMMARY

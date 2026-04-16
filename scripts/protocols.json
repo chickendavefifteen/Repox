@@ -1,0 +1,144 @@
+{
+  "chains": {
+    "ethereum": {
+      "chainId": 1,
+      "rpc": "https://eth.llamarpc.com",
+      "fallbackRpcs": [
+        "https://cloudflare-eth.com",
+        "https://rpc.ankr.com/eth"
+      ],
+      "nativeCurrency": "ETH",
+      "blockExplorer": "https://etherscan.io"
+    },
+    "base": {
+      "chainId": 8453,
+      "rpc": "https://mainnet.base.org",
+      "fallbackRpcs": [
+        "https://base.llamarpc.com",
+        "https://rpc.ankr.com/base"
+      ],
+      "nativeCurrency": "ETH",
+      "blockExplorer": "https://basescan.org"
+    },
+    "optimism": {
+      "chainId": 10,
+      "rpc": "https://mainnet.optimism.io",
+      "fallbackRpcs": [
+        "https://optimism.llamarpc.com",
+        "https://rpc.ankr.com/optimism"
+      ],
+      "nativeCurrency": "ETH",
+      "blockExplorer": "https://optimistic.etherscan.io"
+    },
+    "arbitrum": {
+      "chainId": 42161,
+      "rpc": "https://arb1.llamarpc.com",
+      "fallbackRpcs": [
+        "https://arbitrum-one.publicnode.com",
+        "https://rpc.ankr.com/arbitrum"
+      ],
+      "nativeCurrency": "ETH",
+      "blockExplorer": "https://arbiscan.io"
+    },
+    "zksync": {
+      "chainId": 324,
+      "rpc": "https://mainnet.era.zksync.io",
+      "fallbackRpcs": [
+        "https://zksync.llamarpc.com"
+      ],
+      "nativeCurrency": "ETH",
+      "blockExplorer": "https://explorer.zksync.io"
+    }
+  },
+  "rewardContracts": [
+    {
+      "name": "Uniswap V3 Positions",
+      "chain": "ethereum",
+      "address": "0xC36442b4a4522E871399CD717aBDD847Ab11FE88",
+      "type": "nft_positions",
+      "description": "Uniswap V3 LP fee collection"
+    },
+    {
+      "name": "Curve Gauge Rewards",
+      "chain": "ethereum",
+      "address": "0xd061D61a4d941c39E5453435B6345Dc261C2fcE0",
+      "type": "gauge_rewards",
+      "tokenSymbol": "CRV",
+      "abi": [
+        "function claimable_tokens(address addr) view returns (uint256)",
+        "function claim_rewards(address addr) external"
+      ]
+    },
+    {
+      "name": "Compound V3 USDC Rewards",
+      "chain": "ethereum",
+      "address": "0x1B0e765F6224C21223AeA2af16c1C46E38885a40",
+      "type": "compound_rewards",
+      "tokenSymbol": "COMP",
+      "abi": [
+        "function getRewardOwed(address comet, address account) view returns (address token, uint256 owed)",
+        "function claim(address comet, address src, bool shouldAccrue) external"
+      ]
+    },
+    {
+      "name": "Aave V3 Rewards",
+      "chain": "ethereum",
+      "address": "0x8164Cc65827dcFe994AB23944CBC90e0aa80bFcb",
+      "type": "aave_rewards",
+      "tokenSymbol": "AAVE",
+      "abi": [
+        "function getUserRewards(address[] calldata assets, address user, address reward) view returns (uint256)",
+        "function claimAllRewards(address[] calldata assets, address to) external returns (address[] memory, uint256[] memory)"
+      ]
+    },
+    {
+      "name": "Velodrome Finance Rewards (Optimism)",
+      "chain": "optimism",
+      "address": "0x9c7305eb78a432ced5C4D14Cac27E8Ed569A2e26",
+      "type": "gauge_rewards",
+      "tokenSymbol": "VELO",
+      "abi": [
+        "function earned(address account) view returns (uint256)",
+        "function getReward(address account, address[] memory tokens) external"
+      ]
+    },
+    {
+      "name": "Aerodrome Finance Rewards (Base)",
+      "chain": "base",
+      "address": "0xcF77a3Ba9A5CA399B7c97c74d54e5b1Beb874E43",
+      "type": "gauge_rewards",
+      "tokenSymbol": "AERO",
+      "abi": [
+        "function earned(address account) view returns (uint256)",
+        "function getReward(address account, address[] memory tokens) external"
+      ]
+    },
+    {
+      "name": "GMX Escrowed Rewards (Arbitrum)",
+      "chain": "arbitrum",
+      "address": "0x908C4D94D34924765f1eDc22A1DD098397c59dD4",
+      "type": "escrowed_rewards",
+      "tokenSymbol": "esGMX",
+      "abi": [
+        "function claimable(address _account) view returns (uint256)",
+        "function claim() external"
+      ]
+    },
+    {
+      "name": "Synthetix Staking Rewards (Optimism)",
+      "chain": "optimism",
+      "address": "0x6e56A5D49F775BA08041e28030bc7826b13489e0",
+      "type": "staking_rewards",
+      "tokenSymbol": "SNX",
+      "abi": [
+        "function earned(address account) view returns (uint256)",
+        "function getReward() external"
+      ]
+    }
+  ],
+  "priceApi": {
+    "baseUrl": "https://api.coingecko.com/api/v3",
+    "priceEndpoint": "/simple/price",
+    "supported": ["ethereum", "uniswap", "arbitrum", "optimism", "blur", "eigen-layer"]
+  }
+}

@@ -48,19 +48,41 @@ jobs:
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
           GAS_VALUE_MULTIPLIER: '3'
 
-      - name: Commit updated portfolio data
+      - name: Push scan data to main via API
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
         run: |
-          git config user.name  "claim-bot[bot]"
-          git config user.email "claim-bot@users.noreply.github.com"
-          echo "--- portfolio.json first line ---"
-          head -3 data/portfolio.json
-          echo "--- git status ---"
-          git status
-          git add data/portfolio.json data/claims.json data/pending.json || true
-          echo "--- staged diff ---"
-          git diff --staged --stat
-          git commit -m "bot: update portfolio data $(date -u +%Y-%m-%d)" || echo "[nothing to commit]"
-          git push origin main || echo "[push failed]"
+          commit_file() {
+            local path=$1
+            local file=$2
+            if [ ! -f "$file" ]; then return; fi
+            local content=$(base64 -w 0 "$file")
+            local sha=$(curl -sf \
+              -H "Authorization: token $GH_TOKEN" \
+              "https://api.github.com/repos/$REPO/contents/$path?ref=main" \
+              | jq -r '.sha // empty')
+            local body
+            if [ -n "$sha" ]; then
+              body=$(jq -n --arg m "bot: update $path $(date -u +%Y-%m-%d)" \
+                           --arg c "$content" --arg s "$sha" \
+                           '{message:$m,content:$c,sha:$s,branch:"main"}')
+            else
+              body=$(jq -n --arg m "bot: create $path $(date -u +%Y-%m-%d)" \
+                           --arg c "$content" \
+                           '{message:$m,content:$c,branch:"main"}')
+            fi
+            local result=$(curl -sf -X PUT \
+              -H "Authorization: token $GH_TOKEN" \
+              -H "Content-Type: application/json" \
+              "https://api.github.com/repos/$REPO/contents/$path" \
+              -d "$body")
+            echo "Updated $path: $(echo $result | jq -r '.commit.sha // "error"')"
+          }
+
+          commit_file "data/portfolio.json" "data/portfolio.json"
+          commit_file "data/claims.json"    "data/claims.json"
+          commit_file "data/pending.json"   "data/pending.json"
 
       - name: Summary
         if: always()
@@ -74,6 +96,6 @@ jobs:
             echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
             echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
             echo "| Last scan | $LAST_SCAN |" >> $GITHUB_STEP_SUMMARY
-            echo "| Claimable positions found | $CLAIMABLES |" >> $GITHUB_STEP_SUMMARY
+            echo "| Claimable positions | $CLAIMABLES |" >> $GITHUB_STEP_SUMMARY
             echo "| Total claimable value | $TOTAL_USD |" >> $GITHUB_STEP_SUMMARY
           fi

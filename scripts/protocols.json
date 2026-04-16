@@ -2,40 +2,44 @@
   "chains": {
     "ethereum": {
       "chainId": 1,
-      "rpc": "https://eth.llamarpc.com",
+      "rpc": "https://rpc.ankr.com/eth",
       "fallbackRpcs": [
-        "https://cloudflare-eth.com",
-        "https://rpc.ankr.com/eth"
+        "https://ethereum-rpc.publicnode.com",
+        "https://eth.drpc.org",
+        "https://1rpc.io/eth"
       ],
       "nativeCurrency": "ETH",
       "blockExplorer": "https://etherscan.io"
     },
     "base": {
       "chainId": 8453,
-      "rpc": "https://mainnet.base.org",
+      "rpc": "https://rpc.ankr.com/base",
       "fallbackRpcs": [
-        "https://base.llamarpc.com",
-        "https://rpc.ankr.com/base"
+        "https://base-rpc.publicnode.com",
+        "https://base.drpc.org",
+        "https://1rpc.io/base"
       ],
       "nativeCurrency": "ETH",
       "blockExplorer": "https://basescan.org"
     },
     "optimism": {
       "chainId": 10,
-      "rpc": "https://mainnet.optimism.io",
+      "rpc": "https://rpc.ankr.com/optimism",
       "fallbackRpcs": [
-        "https://optimism.llamarpc.com",
-        "https://rpc.ankr.com/optimism"
+        "https://optimism-rpc.publicnode.com",
+        "https://optimism.drpc.org",
+        "https://1rpc.io/op"
       ],
       "nativeCurrency": "ETH",
       "blockExplorer": "https://optimistic.etherscan.io"
     },
     "arbitrum": {
       "chainId": 42161,
-      "rpc": "https://arb1.llamarpc.com",
+      "rpc": "https://rpc.ankr.com/arbitrum",
       "fallbackRpcs": [
-        "https://arbitrum-one.publicnode.com",
-        "https://rpc.ankr.com/arbitrum"
+        "https://arbitrum-one-rpc.publicnode.com",
+        "https://arbitrum.drpc.org",
+        "https://1rpc.io/arb"
       ],
       "nativeCurrency": "ETH",
       "blockExplorer": "https://arbiscan.io"
@@ -44,7 +48,8 @@
       "chainId": 324,
       "rpc": "https://mainnet.era.zksync.io",
       "fallbackRpcs": [
-        "https://zksync.llamarpc.com"
+        "https://zksync-era-rpc.publicnode.com",
+        "https://zksync.drpc.org"
       ],
       "nativeCurrency": "ETH",
       "blockExplorer": "https://explorer.zksync.io"

@@ -2,7 +2,6 @@ name: Claim Free Tokens
 
 on:
   schedule:
-    # Runs daily at 09:00 UTC
     - cron: '0 9 * * *'
   workflow_dispatch:
     inputs:
@@ -54,7 +53,7 @@ jobs:
           git config user.email "claim-bot@users.noreply.github.com"
           git add data/portfolio.json data/claims.json data/pending.json data/wallet.json || true
           if git diff --staged --quiet; then
-            echo "No data changes — nothing to commit."
+            echo "No data changes - nothing to commit."
           else
             git commit -m "bot: update portfolio data $(date -u +%Y-%m-%d)"
             git push
@@ -63,9 +62,8 @@ jobs:
       - name: Summary
         if: always()
         run: |
-          echo "## Free Token Claimer — Daily Run" >> $GITHUB_STEP_SUMMARY
+          echo "## Free Token Claimer - Daily Run" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-
           if [ -f data/portfolio.json ]; then
             CLAIMABLES=$(jq '.claimables | length' data/portfolio.json 2>/dev/null || echo 0)
             TOTAL_USD=$(jq '("$" + (.totalClaimableUsd // 0 | tostring))' -r data/portfolio.json 2>/dev/null || echo '$0')
@@ -74,7 +72,6 @@ jobs:
             echo "| Claimable positions found | $CLAIMABLES |" >> $GITHUB_STEP_SUMMARY
             echo "| Total claimable value | $TOTAL_USD |" >> $GITHUB_STEP_SUMMARY
           fi
-
           if [ -f data/claims.json ]; then
             CLAIMS=$(jq 'length' data/claims.json 2>/dev/null || echo 0)
             echo "| Total historical claims | $CLAIMS |" >> $GITHUB_STEP_SUMMARY
